@@ -53,7 +53,6 @@ def get_list(csv_file):
 
 def main(inputfile, outputfile): 
     save_csv(iterate_pids(get_list(inputfile)), outputfile)
-    print get_list(inputfile)
     print "saved csv file as: %s"%outputfile
 
 if __name__ == "__main__":
