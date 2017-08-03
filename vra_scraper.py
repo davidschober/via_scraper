@@ -1,4 +1,3 @@
-from bs4 import BeautifulSoup 
 import csv
 import urllib2
 from lxml import etree 
