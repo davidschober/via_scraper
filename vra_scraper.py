@@ -3,9 +3,8 @@ import urllib2
 import urllib
 from lxml import etree 
 import os
-
+from collections import OrderedDict
 from pyxml2dict import XML2Dict 
-
 import json
 
 script_dir = os.path.dirname(__file__) 
@@ -13,11 +12,19 @@ vra_xpath = os.path.join(script_dir, 'vra_xpath.txt')
 next_gen_pred = os.path.join(script_dir, 'dc_term_map.txt')
 next_gen_fields = os.path.join(script_dir, 'next_gen_field.txt')
 
+def get_list(csv_file):
+    """turn a list of items into a, well list. Used for PIDs, vra fields, and headers"""
+    f = open(csv_file, 'r').read()
+    # Note, pop the last one to ensure no errors. 
+    # I think I should do a [line for line in lines if line] to scrub
+    return [line for line in f.split('\n') if line]
+
 def get_vra_url(pid):
     """ Return a vra URL"""
     return "%s%s%s" %("http://images.northwestern.edu/technical_metadata/", pid, "/VRA")
 
 def parse_pid(pid):
+    """ Run pid against list of stuff, lay it out in a list"""
     try: 
         """ parse throught the vra and get the necessary data"""
         images_xpath = get_list(vra_xpath)  
@@ -51,14 +58,7 @@ def save_csv(list_of_data, outputfile):
     for row in list_of_data:
         writer.writerow(row)
 
-def get_list(csv_file):
-    """turn a list of items into a, well list. Used for PIDs, vra fields, and headers"""
-    f = open(csv_file, 'r').read()
-    # Note, pop the last one to ensure no errors. 
-    # I think I should do a [line for line in lines if line] to scrub
-    return [line for line in f.split('\n') if line]
-
-def main(inputfile, outputfile): 
+def save_as_mapped_csv(inputfile, outputfile): 
     save_csv(iterate_pids(get_list(inputfile)), outputfile)
     print "saved csv file as: %s"%outputfile
 
@@ -69,38 +69,33 @@ def save_raw_xml(pids, outputdir):
        filename = pid.replace(":","-")+".xml"
        urllib.URLopener().retrieve(get_vra_url(pid), os.path.join(outputdir, filename)) 
 
-def flatten_dict(init_dict):
-    """Flatten the heck out of a dictionary and ditch all parents"""
+def save_as_flat_json(pids, output):
+    """completely flatten the object, and serialize as json"""
 
-    res_dict = {}
-    if type(init_dict) is not dict:
-        return res_dict
-
-    for k, v in init_dict.iteritems():
-        if type(v) == dict:
-            res_dict.update(flatten_dict(v))
-        else:
-            res_dict[k] = v
-
-    return res_dict
-
-def save_as_json(pids, output):
-    """ grab each PID, concact a list, dump to json"""
-    collection = []
-
+    items = []
     for pid in get_list(pids):
+        item = []
         url = get_vra_url(pid)
-        print 'working on %s' %url 
-        xml2dict = XML2Dict()
-        item_dict = xml2dict.fromstring(urllib.urlopen(url).read())
-        # flatten it and append it
-        collection.append(item_dict)
+        print 'working on %s' %url
+        # Parse it and grab the root
+        tree = etree.parse(url)
+        root = tree.getroot().tag
+        # Iterate through the nodes and create a tuple with (xpath, value)
+        for node in tree.iter():
+            for child in node.getchildren():
+                if child.attrib:
+                    # Extend the list if there's an attribute with the key, value
+                    attributes = [tree.getpath(child)+'@'+key for key in child.attrib.keys()]
+                    item.extend(zip(attributes, child.attrib.values()))
+                if child.text:
+                    item.append((tree.getpath(child), child.text.strip()))
+        # dict and append to a big old list. This could also be a dict.  
+        items.append(OrderedDict(item))
     
     with open (output, 'w') as f:
-        # write it out to a file
-        json.dump(collection, f)     
-
-
+        # write it out to a file based on input
+        json.dump(items, f)
+        
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser()
@@ -112,14 +107,16 @@ if __name__ == "__main__":
     parser.add_help
     args = parser.parse_args()
     if args.rawxml and args.outputfile and args.inputfile:
+        # Save it as raw xml to a directory
         save_raw_xml(args.inputfile, args.outputfile)
+
     elif args.outputfile and args.json and args.inputfile:
-        save_as_json(args.inputfile, args.outputfile)
+        # Save it as a totally flat JSON file
+        save_as_flat_json(args.inputfile, args.outputfile)
     
     elif args.outputfile and args.inputfile:
-        main(args.inputfile, args.outputfile)
+        # Save it as Mapped CSV
+        save_as_mapped_csv(args.inputfile, args.outputfile)
     else:
         parser.print_help()
 
-# test_pids = get_list('/Users/dsc712/Desktop/casas.csv')
-# save_csv('test.csv', iterate_pids(test_pids))
