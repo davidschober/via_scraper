@@ -4,7 +4,6 @@ import urllib
 from lxml import etree 
 import os
 from collections import OrderedDict
-from pyxml2dict import XML2Dict 
 import json
 
 script_dir = os.path.dirname(__file__) 
@@ -94,15 +93,15 @@ def save_as_flat_json(pids, output):
     
     with open (output, 'w') as f:
         # write it out to a file based on input
-        json.dump(items, f)
+        json.dump(items, f, encoding="utf-8")
         
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('-i', '--inputfile')
     parser.add_argument('-o', '--outputfile')
-    parser.add_argument('-r', '--rawxml')
-    parser.add_argument('-j', '--json')
+    parser.add_argument('-r', '--rawxml', action='store_true')
+    parser.add_argument('-j', '--json', action='store_true')
 
     parser.add_help
     args = parser.parse_args()
