@@ -89,8 +89,7 @@ def save_as_flat_json(pids, output):
                 if child.text:
                     item.append((tree.getpath(child), child.text.strip()))
         # dict and append to a big old list. This could also be a dict.  
-        # Sort the dict and append the list. 
-        items.append(sorted(dict(item)))
+        items.append(OrderedDict(item))
     
     with open (output, 'w') as f:
         # write it out to a file based on input
