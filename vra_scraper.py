@@ -16,7 +16,7 @@ def get_list(csv_file):
     f = open(csv_file, 'r').read()
     # Note, pop the last one to ensure no errors. 
     # I think I should do a [line for line in lines if line] to scrub
-    return [line for line in f.split('\n') if line]
+    return [line.strip() for line in f.split('\n') if line]
 
 def get_vra_url(pid):
     """ Return a vra URL"""
@@ -25,7 +25,6 @@ def get_vra_url(pid):
 def parse_pid(pid):
     """ Run pid against list of stuff, lay it out in a list"""
     try: 
-        """ parse throught the vra and get the necessary data"""
         images_xpath = get_list(vra_xpath)  
         url = get_vra_url(pid)
         namespaces = {"vra":"http://www.vraweb.org/vracore4.htm"}
