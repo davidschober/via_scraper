@@ -71,27 +71,37 @@ def save_as_flat_json(pids, output):
     """completely flatten the object, and serialize as json"""
 
     items = []
-    for pid in get_list(pids):
-        item = []
-        url = get_vra_url(pid)
-        print 'working on %s' %url
-        # Parse it and grab the root
-        tree = etree.parse(url)
-        root = tree.getroot().tag
-        # Iterate through the nodes and create a tuple with (xpath, value)
-        for node in tree.iter():
-            for child in node.getchildren():
-                if child.attrib:
-                    # Extend the list if there's an attribute with the key, value
-                    attributes = [tree.getpath(child)+'@'+key for key in child.attrib.keys()]
-                    item.extend(zip(attributes, child.attrib.values()))
-                if child.text:
-                    item.append((tree.getpath(child), child.text.strip()))
+    pid_list = get_list(pids)
+    print "starting %s pids" %len(pid_list)
+    for pid in pid_list:
+        try: 
+            item = []
+            url = get_vra_url(pid)
+            # print 'working on %s' %url
+            # Parse it and grab the root
+            tree = etree.parse(url)
+            root = tree.getroot().tag
+            # Iterate through the nodes and create a tuple with (xpath, value)
+            for node in tree.iter():
+                for child in node.getchildren():
+                    if child.attrib:
+                        # Extend the list if there's an attribute with the key, value
+                        attributes = [tree.getpath(child)+'@'+key for key in child.attrib.keys()]
+                        item.extend(zip(attributes, child.attrib.values()))
+                    if child.text:
+                        item.append((tree.getpath(child), child.text.strip()))
+        except Exception as err:
+            # Trap exceptions and extend the item
+            item.append(("/vra:vra/vra:image@refid", pid))
+            item.append(("ERROR", str(err)))
+            # Print the error
+            print err
         # dict and append to a big old list. This could also be a dict.  
-
         items.append(dict(item))
+
     with open (output, 'w') as f:
         # write it out to a file based on input
+        print "dumping %s json records" %len(items)
         json.dump(items, f, encoding="utf-8")
         
 if __name__ == "__main__":
