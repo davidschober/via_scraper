@@ -67,36 +67,49 @@ def save_raw_xml(pids, outputdir):
        filename = pid.replace(":","-")+".xml"
        urllib.URLopener().retrieve(get_vra_url(pid), os.path.join(outputdir, filename)) 
 
-def save_as_flat_json(pids, output):
+def get_xml_from_file(pid, directory):
+    """Takes a pid, and returns the xmlfile"""
+    xml_file = "%s.xml" %pid.replace(":", "-")
+    data_file = os.path.join(directory, xml_file)
+    return data_file
+
+def flatten_item(url, pid):
+    """ Takes an item's xml and flattens it"""
+    try: 
+        item = []
+        # Parse it and grab the root
+        tree = etree.parse(url)
+        root = tree.getroot().tag
+        # Iterate through the nodes and create a tuple with (xpath, value)
+        for node in tree.iter():
+            for child in node.getchildren():
+                if child.attrib:
+                    # Extend the list if there's an attribute with the key, value
+                    attributes = [tree.getpath(child)+'@'+key for key in child.attrib.keys()]
+                    item.extend(zip(attributes, child.attrib.values()))
+                if child.text:
+                    item.append((tree.getpath(child), child.text.strip()))
+    except Exception as err:
+        # Trap exceptions and extend the item
+        item.append(("/vra:vra/vra:image@refid", pid))
+        item.append(("ERROR", str(err)))
+        # Print the error
+        print err
+    # dict and append to a big old list. This could also be a dict.  
+    return item
+
+def save_as_flat_json(pids, output, **kwargs):
     """completely flatten the object, and serialize as json"""
 
     items = []
     pid_list = get_list(pids)
     print "starting %s pids" %len(pid_list)
     for pid in pid_list:
-        try: 
-            item = []
+        if kwargs.get('xmldir'):
+            url = get_xml_from_file(pid, kwargs['xmldir'])
+        else:
             url = get_vra_url(pid)
-            # print 'working on %s' %url
-            # Parse it and grab the root
-            tree = etree.parse(url)
-            root = tree.getroot().tag
-            # Iterate through the nodes and create a tuple with (xpath, value)
-            for node in tree.iter():
-                for child in node.getchildren():
-                    if child.attrib:
-                        # Extend the list if there's an attribute with the key, value
-                        attributes = [tree.getpath(child)+'@'+key for key in child.attrib.keys()]
-                        item.extend(zip(attributes, child.attrib.values()))
-                    if child.text:
-                        item.append((tree.getpath(child), child.text.strip()))
-        except Exception as err:
-            # Trap exceptions and extend the item
-            item.append(("/vra:vra/vra:image@refid", pid))
-            item.append(("ERROR", str(err)))
-            # Print the error
-            print err
-        # dict and append to a big old list. This could also be a dict.  
+        item = flatten_item(url, pid)
         items.append(dict(item))
 
     with open (output, 'w') as f:
@@ -109,14 +122,19 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('-i', '--inputfile')
     parser.add_argument('-o', '--outputfile')
+    parser.add_argument('-x', '--xmldir')
     parser.add_argument('-r', '--rawxml', action='store_true')
     parser.add_argument('-j', '--json', action='store_true')
+
 
     parser.add_help
     args = parser.parse_args()
     if args.rawxml and args.outputfile and args.inputfile:
         # Save it as raw xml to a directory
         save_raw_xml(args.inputfile, args.outputfile)
+
+    if args.inputfile and args.outputfile and args.json and args.xmldir:
+        save_as_flat_json(args.inputfile, args.outputfile, xmldir=args.xmldir)
 
     elif args.outputfile and args.json and args.inputfile:
         # Save it as a totally flat JSON file
