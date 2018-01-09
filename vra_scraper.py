@@ -3,13 +3,7 @@ import urllib2
 import urllib
 from lxml import etree 
 import os
-from collections import OrderedDict
 import json
-
-script_dir = os.path.dirname(__file__) 
-vra_xpath = os.path.join(script_dir, 'vra_xpath.txt')
-next_gen_pred = os.path.join(script_dir, 'dc_term_map.txt')
-next_gen_fields = os.path.join(script_dir, 'next_gen_field.txt')
 
 def get_list(csv_file):
     """turn a list of items into a, well list. Used for PIDs, vra fields, and headers"""
