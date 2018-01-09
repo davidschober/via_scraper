@@ -133,7 +133,7 @@ if __name__ == "__main__":
         # Save it as raw xml to a directory
         save_raw_xml(args.inputfile, args.outputfile)
 
-    if args.inputfile and args.outputfile and args.json and args.xmldir:
+    elif args.inputfile and args.outputfile and args.json and args.xmldir:
         save_as_flat_json(args.inputfile, args.outputfile, xmldir=args.xmldir)
 
     elif args.outputfile and args.json and args.inputfile:
