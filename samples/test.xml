@@ -1,0 +1,98 @@
+<vra:vra xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:marc="http://www.loc.gov/MARC21/slim" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:vra="http://www.vraweb.org/vracore4.htm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.vraweb.org/vracore4.htm http://www.loc.gov/standards/vracore/vra-strict.xsd">
+    <vra:image id="inu-dil-258550_w" refid="inu:dil-0a6a5fb5-6784-4d7f-bd2b-f1e79f509eff">
+        <vra:agentSet>
+            <vra:display>McKay, Vernon</vra:display>
+            <vra:agent>
+                <vra:name type="personal" vocab="ulan">McKay, Vernon</vra:name>
+                <vra:attribution/>
+            </vra:agent>
+        </vra:agentSet>
+        <vra:culturalContextSet>
+            <vra:display/>
+            <vra:culturalContext/>
+        </vra:culturalContextSet>
+        <vra:dateSet>
+            <vra:display>1935-1977</vra:display>
+            <vra:date type="creation">
+                <vra:earliestDate>1935</vra:earliestDate>
+                <vra:latestDate>1977</vra:latestDate>
+            </vra:date>
+        </vra:dateSet>
+        <vra:descriptionSet>
+            <vra:display>[Watch tower in Kikuyu] ; 729/45 ; Photograph by Kenya Information Office Please Quote Ref. No. ; 5 ; KE-5--Verso</vra:display>
+            <vra:description>[Watch tower in Kikuyu] ; 729/45 ; Photograph by Kenya Information Office Please Quote Ref. No. ; 5 ; KE-5--Verso</vra:description>
+        </vra:descriptionSet>
+        <vra:inscriptionSet>
+            <vra:display/>
+            <vra:inscription>
+                <vra:text/>
+            </vra:inscription>
+        </vra:inscriptionSet>
+        <vra:locationSet>
+            <vra:display>Melville J. Herskovits Library of African Studies ; Melville J. Herskovits Library of African Studies. McKay, Vernon. Vernon McKay (1912-1988) Papers. Personal Papers. Photographs. Kenya ; Box 116-F12-KE-5 ; DIL:inu:dil-0a6a5fb5-6784-4d7f-bd2b-f1e79f509eff ; Voyager:inumckayke5a</vra:display>
+            <vra:location type="repository">
+                <vra:name type="corporate">Melville J. Herskovits Library of African Studies</vra:name>
+            </vra:location>
+            <vra:location type="repository">
+                <vra:name type="other">Melville J. Herskovits Library of African Studies. McKay, Vernon. Vernon McKay (1912-1988) Papers. Personal Papers. Photographs. Kenya</vra:name>
+            </vra:location>
+            <vra:location type="repository">
+                <vra:name type="other">Box 116-F12-KE-5</vra:name>
+            </vra:location>
+            <vra:location>
+                <vra:refid source="DIL">inu:dil-0a6a5fb5-6784-4d7f-bd2b-f1e79f509eff</vra:refid>
+                <vra:refid source="Voyager">inumckayke5a</vra:refid>
+            </vra:location>
+        </vra:locationSet>
+        <vra:materialSet>
+            <vra:display>1 photograph ;</vra:display>
+            <vra:material>1 photograph ;</vra:material>
+        </vra:materialSet>
+        <vra:measurementsSet>
+            <vra:display>17 x 23 cm.</vra:display>
+            <vra:measurements>17 x 23 cm.</vra:measurements>
+        </vra:measurementsSet>
+        <vra:relationSet>
+            <vra:display>Look-out post in watch tower as above.</vra:display>
+            <vra:relation pref="true" relids="inu:dil-91b6e4de-37ab-4a85-9245-078a88d9d9e1" type="imageOf">Look-out post in watch tower as above.</vra:relation>
+        </vra:relationSet>
+        <vra:rightsSet>
+            <vra:display>The images on this web site, from material in the collections of the Melville J. Herskovits Library of African Studies of Northwestern University Libraries, are provided for use by its students, faculty and staff, and by other researchers visiting this site, for research consultation and scholarly purposes only. Further distribution and/or any commercial use of the images from this site is not permitted. IN COPYRIGHT.</vra:display>
+            <vra:rights>
+                <vra:text>The images on this web site, from material in the collections of the Melville J. Herskovits Library of African Studies of Northwestern University Libraries, are provided for use by its students, faculty and staff, and by other researchers visiting this site, for research consultation and scholarly purposes only. Further distribution and/or any commercial use of the images from this site is not permitted. IN COPYRIGHT.</vra:text>
+            </vra:rights>
+        </vra:rightsSet>
+        <vra:stateEditionSet>
+            <vra:display/>
+            <vra:stateEdition/>
+        </vra:stateEditionSet>
+        <vra:subjectSet>
+            <vra:display>Kikuyu (Kenya) ; Fortification ; Watchtowers</vra:display>
+            <vra:subject>
+                <vra:term type="descriptiveTopic" vocab="lcsh">Fortification</vra:term>
+            </vra:subject>
+            <vra:subject>
+                <vra:term type="descriptiveTopic" vocab="lcsh">Watchtowers</vra:term>
+            </vra:subject>
+            <vra:subject>
+                <vra:term type="geographicPlace" vocab="lcsh">Kikuyu (Kenya)</vra:term>
+            </vra:subject>
+        </vra:subjectSet>
+        <vra:techniqueSet>
+            <vra:display/>
+            <vra:technique/>
+        </vra:techniqueSet>
+        <vra:textrefSet>
+            <vra:display/>
+            <vra:textref/>
+        </vra:textrefSet>
+        <vra:titleSet>
+            <vra:display>Look-out post in watch tower as above</vra:display>
+            <vra:title pref="true">Look-out post in watch tower as above</vra:title>
+        </vra:titleSet>
+        <vra:worktypeSet>
+            <vra:display>Photographs</vra:display>
+            <vra:worktype>Photographs</vra:worktype>
+        </vra:worktypeSet>
+    </vra:image>
+</vra:vra>
