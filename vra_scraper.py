@@ -122,7 +122,7 @@ if __name__ == "__main__":
     elif args.inputfile and args.outputfile and args.xmldir:
         save_as_flat_json(args.inputfile, args.outputfile, xmldir=args.xmldir)
 
-    elif args.outputfile and args.json and args.inputfile:
+    elif args.outputfile and args.inputfile:
         # Save it as a totally flat JSON file. Get the Data from a URL
         save_as_flat_json(args.inputfile, args.outputfile)
     
